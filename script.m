@@ -3,6 +3,10 @@ filename = 'caras 1.avi';
 video = VideoReader(filename);
 
 primeraVez = true;
+hVideoOut = vision.VideoPlayer('Name', 'Video Stabilization');
+hVideoOut.Position(1) = round(0.4*hVideoOut.Position(1));
+hVideoOut.Position(2) = round(1.5*(hVideoOut.Position(2)));
+hVideoOut.Position(3:4) = [650 350];
 
 while hasFrame(video)
     % lee frame de la imagen, lo pasa a double y luego a gris
@@ -24,13 +28,12 @@ while hasFrame(video)
         [featuresAct,actF] = extractFeatures(input, actF);
 
         parejas = matchFeatures(featuresAnt,featuresAct);
-        antF = antF(indexPairs(:,1),:);
-        actF = actF(indexPairs(:,2),:);
+        antF = antF(parejas(:,1),:);
+        actF = actF(parejas(:,2),:);
         
       
     end
     
-    
-    _%hVideoOut([input(:,:,1) input]);
+    hVideoOut([input(:,:,1) input]);
 end
 
